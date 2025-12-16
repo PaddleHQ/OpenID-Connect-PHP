@@ -253,6 +253,8 @@ class OpenIDConnectClient
      */
     private $token_endpoint_auth_methods_supported = ['client_secret_basic'];
 
+    private $statePayload = [];
+
     /**
      * @param string|null $provider_url optional
      * @param string|null $client_id optional
@@ -724,7 +726,7 @@ class OpenIDConnectClient
         $response_type = 'code';
 
         $state = $this->setState(
-            new StateData($this->generateRandString(), $this->generateRandString())
+            new StateData($this->generateRandString(), $this->generateRandString(), $this->statePayload)
         );
 
         $auth_params = array_merge($this->authParams, [
@@ -2055,5 +2057,12 @@ class OpenIDConnectClient
     protected function getUserAgent(): string
     {
         return "jumbojett/OpenID-Connect-PHP";
+    }
+
+    public function setStatePayload(array $data): self
+    {
+        $this->statePayload = $data;
+
+        return $this;
     }
 }
