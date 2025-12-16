@@ -1814,7 +1814,8 @@ class OpenIDConnectClient
     protected function claimState(): StateData
     {
         // Do an OpenID Connect session check
-        if (!isset($_REQUEST['state']) || $_REQUEST['state'] !== ($data = $this->getSessionKey('openid_connect_state'))['id']) {
+        $data = $this->getSessionKey('openid_connect_state');
+        if (!isset($_REQUEST['state']) || $_REQUEST['state'] !== ($data['id'] ?? null)) {
             throw new OpenIDConnectClientException('Unable to determine state');
         }
 
